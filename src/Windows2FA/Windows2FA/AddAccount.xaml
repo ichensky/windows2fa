@@ -5,17 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Windows2FA"
         mc:Ignorable="d"
-        Title="Add account" Height="265" Width="500" MinWidth="500" MaxWidth="500">
+        Title="Add account" Height="215" MinHeight="215" MaxHeight="215" Width="500" MinWidth="500" MaxWidth="500" >
     <Grid >
-        <Grid Margin="15,15,15,0" Height="29" VerticalAlignment="Top">
-            <Label Margin="0,0,365,0">* Account name:</Label>
-            <TextBox x:Name="AccountName" Height="25" Margin="110,2,0,2" />
+        <Grid Margin="15,15,15,0" Height="89" VerticalAlignment="Top">
+            <Label Margin="0,0,365,0" Height="34" VerticalAlignment="Top">* QR code uri:</Label>
+            <Label Name="ErrorHint" Visibility="Hidden" Foreground="Red" Margin="110,44,145,0" Height="34" VerticalAlignment="Top">Please enter valid uri.</Label>
+            <TextBox TextChanged="Code_TextChanged" x:Name="Code" Height="34" VerticalAlignment="Top" HorizontalAlignment="Right" Width="360"  />
+            <Button x:Name="LoadQrCode" Margin="0,40,0,0" Click="LoadQrCode_Click" HorizontalAlignment="Right" Width="140" Height="39" VerticalAlignment="Top">Load from QR code ..</Button>
         </Grid>
-        <Grid Margin="15,50,15,0" Height="80" VerticalAlignment="Top">
-            <Label Margin="0,0,365,55">* QR code uri:</Label>
-            <TextBox x:Name="Code" Margin="110,0,0,55"  />
-            <Button x:Name="LoadQrCode" Margin="330,30,0,10">Load from QR code ..</Button>
-        </Grid>
-        <Button Margin="15,150,15,0" Height="84" VerticalAlignment="Top" x:Name="Save">Save</Button>
+        <Button Margin="15,105,15,0" x:Name="Save" Click="Save_Click" Height="59" VerticalAlignment="Top">Save</Button>
     </Grid>
 </Window>
