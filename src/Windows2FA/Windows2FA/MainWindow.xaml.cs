@@ -38,7 +38,8 @@ namespace Windows2FA
             {
                 DB.Instance.Data.Add(text);
                 DB.Instance.Save();
-                this.QRs.DataContext = new DB.Instance.Data.Select(x => new Qr(text, false));
+                var list = DB.Instance.Data.Select(x => new Qr(text, false));
+                this.QRs.DataContext = new ObservableCollection<Qr>(list);
             }
         }
 

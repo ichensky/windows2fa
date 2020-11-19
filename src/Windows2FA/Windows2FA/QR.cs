@@ -41,6 +41,10 @@ namespace Windows2FA
 
         public static bool IsValid(string str) {
 
+            if (!string.IsNullOrWhiteSpace(str))
+            {
+                return false;
+            }
             var uri = new Uri(str);
             if (!System.Uri.IsWellFormedUriString(str, UriKind.Absolute))
             {
