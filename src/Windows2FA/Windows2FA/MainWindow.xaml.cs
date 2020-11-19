@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
 //using OtpNet;
 
@@ -32,10 +34,11 @@ namespace Windows2FA
         {
             isOpenAddAccount = false;
             var text = ((AddAccount)sender).Code.Text;
-            if (!Uri.IsWellFormedUriString(text, UriKind.Absolute) || !Qr.IsValid(new Uri(text)))
+            if (!Qr.IsValid(text))
             {
                 DB.Instance.Data.Add(text);
                 DB.Instance.Save();
+                this.QRs.DataContext = new DB.Instance.Data.Select(x => new Qr(text, false));
             }
         }
 

@@ -21,7 +21,7 @@ namespace Windows2FA
         }
 
         private void Save_Click(object sender, RoutedEventArgs e) {
-            if (!Uri.IsWellFormedUriString(this.Code.Text, UriKind.Absolute))
+            if (!Qr.IsValid(this.Code.Text))
             {
                 this.ErrorHint.Visibility = Visibility.Visible;
                 return;
@@ -34,7 +34,7 @@ namespace Windows2FA
             Bitmap image;
             try
             {
-                image = (Bitmap)Bitmap.FromFile(path);
+                image = (Bitmap)Image.FromFile(path);
             }
             catch (Exception)
             {
@@ -66,7 +66,7 @@ namespace Windows2FA
             if (dr.HasValue && dr.Value)
             {
                 this.Code.Text = Decode(dialog.FileName).Text;
-                if (!Uri.IsWellFormedUriString(this.Code.Text, UriKind.Absolute) || !Qr.IsValid(new Uri(this.Code.Text)))
+                if (!Qr.IsValid(this.Code.Text))
                 {
                     this.ErrorHint.Visibility = Visibility.Visible;
                 }
