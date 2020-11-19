@@ -1,0 +1,21 @@
+﻿<Window x:Class="Windows2FA.AddAccount"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Windows2FA"
+        mc:Ignorable="d"
+        Title="Add account" Height="265" Width="500" MinWidth="500" MaxWidth="500">
+    <Grid >
+        <Grid Margin="15,15,15,0" Height="29" VerticalAlignment="Top">
+            <Label Margin="0,0,365,0">* Account name:</Label>
+            <TextBox x:Name="AccountName" Height="25" Margin="110,2,0,2" />
+        </Grid>
+        <Grid Margin="15,50,15,0" Height="80" VerticalAlignment="Top">
+            <Label Margin="0,0,365,55">* QR code uri:</Label>
+            <TextBox x:Name="Code" Margin="110,0,0,55"  />
+            <Button x:Name="LoadQrCode" Margin="330,30,0,10">Load from QR code ..</Button>
+        </Grid>
+        <Button Margin="15,150,15,0" Height="84" VerticalAlignment="Top" x:Name="Save">Save</Button>
+    </Grid>
+</Window>
