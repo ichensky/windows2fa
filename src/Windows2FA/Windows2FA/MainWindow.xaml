@@ -5,29 +5,42 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Windows2FA"
         mc:Ignorable="d"
-        Title="MainWindow" Height="400" Width="400">
+        Title="MainWindow" Height="400" Width="400" MinHeight="400" MaxHeight="400" MaxWidth="400" MinWidth="400" >
     <Window.Resources>
         <DataTemplate x:Key="QRTemplate" >
-            <StackPanel Orientation="Horizontal" >
-                <TextBlock Text="{Binding Path=Issuer}" Width="50"/>
-                <TextBlock Text="{Binding Path=Label}" Width="20"/>
-                <TextBlock Text="{Binding Path=Code}" Width="20"/>
-                <TextBlock Text="{Binding Path=NextCode}" Width="20"/>
-                <Button Content="Delete" Click="DeleteCode"/>
-                <Button BorderBrush="LightGreen" Content="Copy code" Click="CopyCode"/>
-            </StackPanel>
+            <Grid Margin="5,5,5,5" Height="50">
+                <TextBlock Text="{Binding Path=Issuer}" Width="235" VerticalAlignment="Top" HorizontalAlignment="Left" Foreground="CadetBlue" FontSize="16" Height="25" Margin="0,0,0,0"/>
+                <TextBlock Text="{Binding Path=Label}" Width="235" VerticalAlignment="Bottom" HorizontalAlignment="Left" Height="25" Margin="0,0,0,0"/>
+                <TextBlock Text="{Binding Path=ReminigSeconds}" Width="30" Height="37" VerticalAlignment="Bottom" FontSize="18" TextAlignment="Center" HorizontalAlignment="Left" Margin="245,0,0,0"/>
+                <TextBox Text="{Binding Path=Code, Mode=OneWay}" IsReadOnly="True" BorderThickness="0" Background="Transparent" Width="75" Height="25" FontSize="16" Foreground="ForestGreen" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="175,0,0,0"/>
+                <TextBox Text="{Binding Path=NextCode, Mode=OneWay}" IsReadOnly="True" BorderThickness="0" Background="Transparent" Width="75" Height="25" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="175,0,0,0"/>
+                <Button Content="Copy" Click="CopyCode" Margin="295,0,0,0" Width="65"/>
+                <Grid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Copy code" Click="CopyCode"></MenuItem>
+                        <MenuItem Header="Copy next code" Click="CopyNextCode"></MenuItem>
+                        <Separator></Separator>
+                        <MenuItem Header="Delete" Foreground="Red" Click="DeleteCode"></MenuItem>
+                    </ContextMenu>
+                </Grid.ContextMenu>
+            </Grid>
         </DataTemplate>
     </Window.Resources>
 
 
     <Grid>
         <Menu VerticalAlignment="Top" Height="20" >
-            <MenuItem x:Name="AddAccount" Click="AddAccount_Click" Header="Add account .."></MenuItem>
-            <MenuItem x:Name="ShowCodes" Header="Show codes"></MenuItem>
+            <MenuItem Header="File">
+                <MenuItem x:Name="AddAccount" Click="AddAccount_Click" Header="Add account"></MenuItem>
+                <MenuItem x:Name="OpenDbPath" Click="OpenDbPath_Click" Header="Open db path"></MenuItem>
+            </MenuItem>
+            <MenuItem x:Name="ShowCodes" Click="ShowCodes_Click" Header="Show codes"></MenuItem>
         </Menu>
-            <ListBox IsSynchronizedWithCurrentItem="True"
+        <ListBox IsSynchronizedWithCurrentItem="True"
             Margin="0,20,0,0"
             x:Name="QRs" ItemsSource="{Binding}"
             ItemTemplate="{StaticResource QRTemplate}" />
+
+
     </Grid>
 </Window>

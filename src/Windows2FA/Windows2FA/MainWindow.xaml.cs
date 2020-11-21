@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
-//using OtpNet;
+using System.Windows.Controls;
 
 namespace Windows2FA
 {
@@ -13,10 +13,12 @@ namespace Windows2FA
     public partial class MainWindow : Window
     {
         bool isOpenAddAccount = false;
+        bool isShowCodes = false;
 
         public MainWindow()
         {
             InitializeComponent();
+            this.QRs.DataContext = DB.Instance.GetQrs(isShowCodes);
         }
 
         private void AddAccount_Click(object sender, RoutedEventArgs e)
@@ -32,25 +34,38 @@ namespace Windows2FA
 
         private void AddAccount_Closed(object sender, EventArgs e)
         {
+            this.QRs.DataContext = DB.Instance.GetQrs(isShowCodes);
             isOpenAddAccount = false;
-            var text = ((AddAccount)sender).Code.Text;
-            if (!Qr.IsValid(text))
-            {
-                DB.Instance.Data.Add(text);
-                DB.Instance.Save();
-                var list = DB.Instance.Data.Select(x => new Qr(text, false));
-                this.QRs.DataContext = new ObservableCollection<Qr>(list);
-            }
         }
 
         private void DeleteCode(object sender, RoutedEventArgs e)
         {
-
+           var context = (Qr)((FrameworkElement)sender).DataContext;
+           DB.Instance.RemoveQr(context);
+           this.QRs.DataContext = DB.Instance.GetQrs(isShowCodes);
         }
 
         private void CopyCode(object sender, RoutedEventArgs e)
         {
+            var context = (Qr)((FrameworkElement)sender).DataContext;
+            Clipboard.SetText(context.Code);
+        }
 
+        private void ShowCodes_Click(object sender, RoutedEventArgs e)
+        {
+            isShowCodes = !isShowCodes;
+            this.QRs.DataContext = DB.Instance.GetQrs(isShowCodes);
+        }
+
+        private void CopyNextCode(object sender, RoutedEventArgs e)
+        {
+            var context = (Qr)((FrameworkElement)sender).DataContext;
+            Clipboard.SetText(context.NextCode);
+        }
+
+        private void OpenDbPath_Click(object sender, RoutedEventArgs e)
+        {
+            DB.Instance.OpenDbPath();
         }
     }
 }

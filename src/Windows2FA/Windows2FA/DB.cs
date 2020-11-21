@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace Windows2FA
 {
@@ -13,11 +13,11 @@ namespace Windows2FA
         private readonly string dbPath;
         private static DB db;
 
-        public ConcurrentBag<string> Data { get; }
+        private List<string> data;
 
         private DB() {
             this.dbPath = GetPath();
-            this.Data = new ConcurrentBag<string>(LoadData());
+            this.data = LoadData().ToList();
         }
 
         public static DB Instance
@@ -38,11 +38,45 @@ namespace Windows2FA
             }
         }
 
-        public void Save() {
+        public void OpenDbPath() {
+            var path = Path.GetDirectoryName(dbPath);
+            Process.Start("explorer.exe",path);
+        }
+
+        public IEnumerable<Qr> GetQrs(bool isShowCodes)
+        {
             lock (_lock)
             {
-                File.WriteAllLines(dbPath, Data);
+                return data.Select(x => new Qr(x, isShowCodes))
+                           .OrderBy(x => x.Issuer).ToList();
             }
+        }
+
+        public void AddQr(Qr qr) 
+        {
+            lock (_lock)
+            {
+                if (!data.Contains(qr.Url))
+                {
+                    data.Add(qr.Url);
+                    Save();
+                }
+            }
+        }
+        public void RemoveQr(Qr qr) 
+        {
+            lock (_lock)
+            {
+                if (data.Contains(qr.Url))
+                {
+                    data.Remove(qr.Url);
+                    Save();
+                }
+            }
+        }
+
+        private void Save() {
+                File.WriteAllLines(dbPath, data);
         }
 
         private IEnumerable<string> LoadData() =>

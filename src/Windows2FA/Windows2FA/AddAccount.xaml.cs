@@ -2,6 +2,7 @@
 using System;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using ZXing;
 using ZXing.Common;
@@ -26,6 +27,9 @@ namespace Windows2FA
                 this.ErrorHint.Visibility = Visibility.Visible;
                 return;
             }
+
+            DB.Instance.AddQr(new Qr(this.Code.Text));
+
             this.Close();
         }
 
