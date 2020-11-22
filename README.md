@@ -5,5 +5,11 @@ Offline Windows [multi-factor authentication
 
 ![Windows 2FA](doc/imgs/Windows2FA.png)
 
+### File -> Add account:
 
 ![Add account](doc/imgs/AddAccount.png)
+
+
+### Example of the QR code: 
+
+![QR code](doc/qrs/google.png)
