@@ -37,7 +37,7 @@ namespace Windows2FA
             this.Issuer = parsed["issuer"];
             var secret = parsed["secret"];
             this.totp = GetTotp(secret);
-            this.ReminigSeconds = totp.RemainingSeconds();
+            UpdateReminingSeconds();
         }
         public void ShowCodes(bool isShowCodes) {
             if (isShowCodes)
@@ -49,6 +49,10 @@ namespace Windows2FA
             this.Code = null;
             this.NextCode = null;
             }
+        }
+
+        public void UpdateReminingSeconds() {
+            this.ReminigSeconds = totp.RemainingSeconds();
         }
 
         private Totp GetTotp(string secret) {

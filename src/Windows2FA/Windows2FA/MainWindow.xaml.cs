@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Threading;
 
 namespace Windows2FA
 {
@@ -19,6 +20,12 @@ namespace Windows2FA
         {
             InitializeComponent();
             this.QRs.DataContext = DB.Instance.GetQrs();
+            var timer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromSeconds(1),
+            };
+            timer.Tick +=(s,e)=> DB.Instance.UpdateReminingSecondsQrs();
+            timer.Start();
         }
 
         private void AddAccount_Click(object sender, RoutedEventArgs e)

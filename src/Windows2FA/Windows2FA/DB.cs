@@ -46,13 +46,11 @@ namespace Windows2FA
             Process.Start("explorer.exe",path);
         }
 
-        public ObservableCollection<Qr> GetQrs()
-        {
-            return qrs;    
-        }
-        public void ShowCodes(bool isShowCodes) {
-            qrs.ShowCodes(isShowCodes);
-        }
+        public ObservableCollection<Qr> GetQrs() => qrs;
+
+        public void UpdateReminingSecondsQrs() => qrs.UpdateReminingSeconds();
+
+        public void ShowCodes(bool isShowCodes) => qrs.ShowCodes(isShowCodes);
 
         public void AddQr(Qr qr) 
         {

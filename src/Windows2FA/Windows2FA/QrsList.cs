@@ -49,5 +49,13 @@ namespace Windows2FA
             }
             this.OnCollectionChanged(new System.Collections.Specialized.NotifyCollectionChangedEventArgs(System.Collections.Specialized.NotifyCollectionChangedAction.Reset));
         }
+
+        public void UpdateReminingSeconds() {
+            foreach (var item in this)
+            {
+                item.UpdateReminingSeconds();
+            }
+            this.OnCollectionChanged(new System.Collections.Specialized.NotifyCollectionChangedEventArgs(System.Collections.Specialized.NotifyCollectionChangedAction.Reset));
+        }
     }
 }
