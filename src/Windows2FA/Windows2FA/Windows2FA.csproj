@@ -2,13 +2,18 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>authentication.ico</ApplicationIcon>
+    <Authors>Ivan Chenskyi</Authors>
+    <SignAssembly>true</SignAssembly>
+    <DelaySign>false</DelaySign>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Otp.NET" Version="1.2.2" />
     <PackageReference Include="System.Drawing.Common" Version="5.0.0" />
+    <PackageReference Include="System.Runtime" Version="4.3.1" />
     <PackageReference Include="ZXing.Net" Version="0.16.6" />
   </ItemGroup>
 

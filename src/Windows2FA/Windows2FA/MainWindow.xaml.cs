@@ -18,7 +18,7 @@ namespace Windows2FA
         public MainWindow()
         {
             InitializeComponent();
-            this.QRs.DataContext = DB.Instance.GetQrs(isShowCodes);
+            this.QRs.DataContext = DB.Instance.GetQrs();
         }
 
         private void AddAccount_Click(object sender, RoutedEventArgs e)
@@ -34,7 +34,6 @@ namespace Windows2FA
 
         private void AddAccount_Closed(object sender, EventArgs e)
         {
-            this.QRs.DataContext = DB.Instance.GetQrs(isShowCodes);
             isOpenAddAccount = false;
         }
 
@@ -42,25 +41,24 @@ namespace Windows2FA
         {
            var context = (Qr)((FrameworkElement)sender).DataContext;
            DB.Instance.RemoveQr(context);
-           this.QRs.DataContext = DB.Instance.GetQrs(isShowCodes);
         }
 
         private void CopyCode(object sender, RoutedEventArgs e)
         {
             var context = (Qr)((FrameworkElement)sender).DataContext;
-            Clipboard.SetText(context.Code);
+            context.SetCodeToClipboard();
         }
 
         private void ShowCodes_Click(object sender, RoutedEventArgs e)
         {
             isShowCodes = !isShowCodes;
-            this.QRs.DataContext = DB.Instance.GetQrs(isShowCodes);
+            DB.Instance.ShowCodes(isShowCodes);
         }
 
         private void CopyNextCode(object sender, RoutedEventArgs e)
         {
             var context = (Qr)((FrameworkElement)sender).DataContext;
-            Clipboard.SetText(context.NextCode);
+            context.SetNextCodeToClipboard();
         }
 
         private void OpenDbPath_Click(object sender, RoutedEventArgs e)

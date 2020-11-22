@@ -4,10 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web;
+using System.Runtime;
+using System.Windows;
 
 namespace Windows2FA
 {
-    public class Qr
+    public class Qr   : IEquatable<Qr>,IComparable<Qr>
     {
         public string Url { get; private set; }
 
@@ -21,24 +23,49 @@ namespace Windows2FA
 
         public int ReminigSeconds { get; private set; }
 
-        public Qr(string url, bool isShowCodes = false) {
+        private int hash;
+        private Totp totp;
+
+        public Qr(string url) {
 
             url = url.Trim();
             var uri = new Uri(url);
             this.Url = url;
+            this.hash = url.GetHashCode();
             this.Label = uri.AbsolutePath.TrimStart('/');
             var parsed = HttpUtility.ParseQueryString(uri.Query);
             this.Issuer = parsed["issuer"];
             var secret = parsed["secret"];
-
+            this.totp = GetTotp(secret);
+            this.ReminigSeconds = totp.RemainingSeconds();
+        }
+        public void ShowCodes(bool isShowCodes) {
             if (isShowCodes)
             {
-                var key = Base32Encoding.ToBytes(secret);
-                var totp = new Totp(key);
                 this.Code = totp.ComputeTotp();
-                this.ReminigSeconds = totp.RemainingSeconds();
                 this.NextCode = totp.ComputeTotp(DateTime.UtcNow.AddSeconds(30));
             }
+            else { 
+            this.Code = null;
+            this.NextCode = null;
+            }
+        }
+
+        private Totp GetTotp(string secret) {
+            var key = Base32Encoding.ToBytes(secret);
+            var totp = new Totp(key);
+            return totp;
+        }
+
+        public void SetCodeToClipboard() {
+            var code = totp.ComputeTotp();
+            Clipboard.SetText(code);
+        }
+
+        public void SetNextCodeToClipboard()
+        {
+            var nextCode = totp.ComputeTotp(DateTime.UtcNow.AddSeconds(30));
+            Clipboard.SetText(nextCode);
         }
 
         public static bool IsValid(string str) {
@@ -97,6 +124,40 @@ namespace Windows2FA
             }
 
             return true;
+        }
+         
+        // override object.GetHashCode
+        public override int GetHashCode()
+        {
+            return hash;
+        }
+
+        public bool Equals(Qr other)
+        {
+            if (other == null)
+            {
+                return false;
+            }
+            var flag =  this.GetHashCode() == other.GetHashCode();
+            if (flag)
+            {
+                flag = this.Url == other.Url;
+            }
+            return flag;
+        }
+
+        public int CompareTo(Qr other)
+        {
+            if (other==null)
+            {
+                throw new Exception();
+            }
+            var val =  this.Issuer.CompareTo(other.Issuer);
+            if (val==0)
+            {
+                val = this.Label.CompareTo(other.Label);
+            }
+            return val;
         }
     }
 }

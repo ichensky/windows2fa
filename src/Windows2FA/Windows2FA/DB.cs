@@ -1,23 +1,26 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
 namespace Windows2FA
 {
-    public class DB
+    public class DB 
     {
         private static readonly object _lock = new object();
         private readonly string dbPath;
         private static DB db;
 
-        private List<string> data;
+        private QrsList qrs;
 
         private DB() {
             this.dbPath = GetPath();
-            this.data = LoadData().ToList();
+            var data = LoadData();
+            qrs = new QrsList(data);
         }
 
         public static DB Instance
@@ -43,40 +46,37 @@ namespace Windows2FA
             Process.Start("explorer.exe",path);
         }
 
-        public IEnumerable<Qr> GetQrs(bool isShowCodes)
+        public ObservableCollection<Qr> GetQrs()
         {
-            lock (_lock)
-            {
-                return data.Select(x => new Qr(x, isShowCodes))
-                           .OrderBy(x => x.Issuer).ToList();
-            }
+            return qrs;    
+        }
+        public void ShowCodes(bool isShowCodes) {
+            qrs.ShowCodes(isShowCodes);
         }
 
         public void AddQr(Qr qr) 
         {
             lock (_lock)
             {
-                if (!data.Contains(qr.Url))
+                if (qrs.AddQr(qr))
                 {
-                    data.Add(qr.Url);
                     Save();
                 }
-            }
+             }
         }
         public void RemoveQr(Qr qr) 
         {
             lock (_lock)
             {
-                if (data.Contains(qr.Url))
+                if (qrs.RemoveQr(qr))
                 {
-                    data.Remove(qr.Url);
                     Save();
                 }
             }
         }
 
         private void Save() {
-                File.WriteAllLines(dbPath, data);
+                File.WriteAllLines(dbPath, qrs.Select(x=>x.Url));
         }
 
         private IEnumerable<string> LoadData() =>

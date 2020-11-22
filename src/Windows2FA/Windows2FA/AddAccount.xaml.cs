@@ -24,6 +24,7 @@ namespace Windows2FA
         private void Save_Click(object sender, RoutedEventArgs e) {
             if (!Qr.IsValid(this.Code.Text))
             {
+                this.ErrorHint.Content = "Please enter valid uri.";
                 this.ErrorHint.Visibility = Visibility.Visible;
                 return;
             }
@@ -61,22 +62,35 @@ namespace Windows2FA
 
         private void LoadQrCode_Click(object sender, RoutedEventArgs e)
         {
-            var dialog = new OpenFileDialog();
-            dialog.Filter = "IMG Files| *.jpg;*jpeg;*png";
-            dialog.ValidateNames = true;
-            dialog.Multiselect = false;
+            var dialog = new OpenFileDialog
+            {
+                Filter = "IMG Files| *.jpg;*jpeg;*png",
+                ValidateNames = true,
+                Multiselect = false
+            };
             var dr = dialog.ShowDialog();
 
             if (dr.HasValue && dr.Value)
             {
-                this.Code.Text = Decode(dialog.FileName).Text;
-                if (!Qr.IsValid(this.Code.Text))
+                try
+                {
+                    this.Code.Text = Decode(dialog.FileName).Text;
+                    if (!Qr.IsValid(this.Code.Text))
+                    {
+                        this.ErrorHint.Content = "Please enter valid uri.";
+                        this.ErrorHint.Visibility = Visibility.Visible;
+                    }
+                    else
+                    {
+                        this.ErrorHint.Visibility = Visibility.Hidden;
+                    }
+                }
+                catch (Exception ex)
                 {
                     this.ErrorHint.Visibility = Visibility.Visible;
+                    this.ErrorHint.Content = ex.Message;
                 }
-                else {
-                    this.ErrorHint.Visibility = Visibility.Hidden;
-                }
+
             }
         }
       
