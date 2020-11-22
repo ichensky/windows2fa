@@ -27,6 +27,17 @@ namespace Windows2FA
             };
             timer.Tick +=(s,e)=> DB.Instance.UpdateReminingSecondsQrs();
             timer.Start();
+            this.StateChanged += (s, e)=> {
+                switch (this.WindowState)
+                {
+                    case WindowState.Minimized:
+                        timer.Stop();
+                        break;
+                    default:
+                        timer.Start();
+                        break;
+                }
+            };
         }
 
         private void AddAccount_Click(object sender, RoutedEventArgs e)
@@ -34,7 +45,11 @@ namespace Windows2FA
             if (!isOpenAddAccount)
             {
                 var addAccount = new AddAccount();
-                addAccount.Closed += (s, e) => isOpenAddAccount = false;
+                addAccount.Closed += (s, e) =>
+                {
+                    isOpenAddAccount = false;
+                    DB.Instance.ShowCodes(isShowCodes);
+                };
                 addAccount.Show();
                 isOpenAddAccount = true;
             }

@@ -32,10 +32,10 @@ namespace Windows2FA
             var uri = new Uri(url);
             this.Url = url;
             this.hash = url.GetHashCode();
-            this.Label = uri.AbsolutePath.TrimStart('/');
+            this.Label = HttpUtility.UrlDecode(uri.AbsolutePath.TrimStart('/'));
             var parsed = HttpUtility.ParseQueryString(uri.Query);
-            this.Issuer = parsed["issuer"];
-            var secret = parsed["secret"];
+            this.Issuer = HttpUtility.UrlDecode(parsed["issuer"]);
+            var secret = HttpUtility.UrlDecode(parsed["secret"]);
             this.totp = GetTotp(secret);
             UpdateReminingSeconds();
         }
