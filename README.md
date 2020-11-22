@@ -13,7 +13,8 @@ Offline Windows desktop [multi-factor authentication
 ![Windows 2FA](doc/imgs/Windows2FA.png)
 
 ### File -> Add account:
-You can enter `otpauth://totp/...` manually or load image with QR code. 
+Enter uri `otpauth://totp/...` manually or load image with QR code. 
+
 ![Add account](doc/imgs/AddAccount.png)
 
 
