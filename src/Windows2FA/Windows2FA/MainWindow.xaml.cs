@@ -14,6 +14,7 @@ namespace Windows2FA
     public partial class MainWindow : Window
     {
         bool isOpenAddAccount = false;
+        bool isOpenAbout = false;
         bool isShowCodes = false;
 
         public MainWindow()
@@ -33,15 +34,10 @@ namespace Windows2FA
             if (!isOpenAddAccount)
             {
                 var addAccount = new AddAccount();
-                addAccount.Closed += AddAccount_Closed;
+                addAccount.Closed += (s, e) => isOpenAddAccount = false;
                 addAccount.Show();
                 isOpenAddAccount = true;
             }
-        }
-
-        private void AddAccount_Closed(object sender, EventArgs e)
-        {
-            isOpenAddAccount = false;
         }
 
         private void DeleteCode(object sender, RoutedEventArgs e)
@@ -71,6 +67,17 @@ namespace Windows2FA
         private void OpenDbPath_Click(object sender, RoutedEventArgs e)
         {
             DB.Instance.OpenDbPath();
+        }
+
+        private void About_Click(object sender, RoutedEventArgs e)
+        {
+            if (!isOpenAbout)
+            {
+                var addAccount = new About();
+                addAccount.Closed += (s, e) => isOpenAbout = false;
+                addAccount.Show();
+                isOpenAbout = true;
+            }
         }
     }
 }

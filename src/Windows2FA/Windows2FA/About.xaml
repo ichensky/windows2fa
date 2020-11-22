@@ -1,0 +1,14 @@
+﻿<Window x:Class="Windows2FA.About"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Windows2FA"
+        mc:Ignorable="d"
+        Title="About" Height="200" Width="400">
+    <Grid>
+        <TextBlock Margin="10,10,175,148">Windows2FA v1.0</TextBlock>
+        <TextBlock Margin="10,36,10,104">Copyright (c) Ivan Chensky</TextBlock>
+        <TextBlock Margin="10,58,10,82">https://github.com/ichensky</TextBlock>
+    </Grid>
+</Window>

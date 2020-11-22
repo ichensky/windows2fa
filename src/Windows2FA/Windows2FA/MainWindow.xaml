@@ -16,11 +16,11 @@
                 <TextBox Text="{Binding Path=NextCode, Mode=OneWay}" IsReadOnly="True" BorderThickness="0" Background="Transparent" Width="75" Height="25" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="175,0,0,0"/>
                 <Button Content="Copy" Click="CopyCode" Margin="295,0,0,0" Width="65"/>
                 <Grid.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="Copy code" Click="CopyCode"></MenuItem>
-                        <MenuItem Header="Copy next code" Click="CopyNextCode"></MenuItem>
+                    <ContextMenu >
+                        <MenuItem Header="Copy code" DataContext="{Binding}" Click="CopyCode"></MenuItem>
+                        <MenuItem Header="Copy next code" DataContext="{Binding}" Click="CopyNextCode"></MenuItem>
                         <Separator></Separator>
-                        <MenuItem Header="Delete" Foreground="Red" Click="DeleteCode"></MenuItem>
+                        <MenuItem Header="Delete" Foreground="Red" DataContext="{Binding}"  Click="DeleteCode"></MenuItem>
                     </ContextMenu>
                 </Grid.ContextMenu>
             </Grid>
@@ -35,6 +35,7 @@
                 <MenuItem x:Name="OpenDbPath" Click="OpenDbPath_Click" Header="Open db path"></MenuItem>
             </MenuItem>
             <MenuItem x:Name="ShowCodes" Click="ShowCodes_Click" Header="Show codes"></MenuItem>
+            <MenuItem x:Name="About" Click="About_Click" Header="About"></MenuItem>
         </Menu>
         <ListBox IsSynchronizedWithCurrentItem="True"
             Margin="0,20,0,0"
