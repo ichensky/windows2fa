@@ -18,6 +18,6 @@ Enter uri `otpauth://totp/...` manually or load image with QR code.
 ![Add account](doc/imgs/AddAccount.png)
 
 
-### Example of the QR code: 
+### Example of a QR code: 
 
 ![QR code](doc/qrs/google.png)
