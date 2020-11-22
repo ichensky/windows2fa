@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Windows2FA"
         mc:Ignorable="d"
-        Title="About" Height="200" Width="400">
+        Title="About" Height="200" Width="400" MinHeight="200" MaxHeight="200" MinWidth="400" MaxWidth="400">
     <Grid>
-        <TextBlock Margin="10,10,175,148">Windows2FA v1.0</TextBlock>
-        <TextBlock Margin="10,36,10,104">Copyright (c) Ivan Chensky</TextBlock>
-        <TextBlock Margin="10,58,10,82">https://github.com/ichensky</TextBlock>
+        <TextBlock Margin="10,10,0,0" HorizontalAlignment="Center" Width="370" Height="20" VerticalAlignment="Top">Windows2FA v1.0</TextBlock>
+        <TextBlock Margin="10,35,0,0" HorizontalAlignment="Center" Width="370" Height="20" VerticalAlignment="Top">Copyright (c) Ivan Chensky</TextBlock>
+        <TextBlock Margin="10,60,0,0" HorizontalAlignment="Center" Width="370" Height="20" VerticalAlignment="Top">https://github.com/ichensky</TextBlock>
     </Grid>
 </Window>
