@@ -34,6 +34,7 @@ namespace Windows2FA
                         timer.Stop();
                         break;
                     default:
+                        DB.Instance.UpdateReminingSecondsQrs();
                         timer.Start();
                         break;
                 }
